@@ -34,14 +34,14 @@ public class beat : MonoBehaviour
 
     public static beat instance;
 
+    public GameObject nodePrefab;
+
     //an AudioSource attached to this GameObject that will play the music.
     public AudioSource musicSource;
 
     float bpm;
     float[] notes = {1f,2f,2.5f,3f,3.5f,4.5f};
     int nextIndex = 0;
-
-    public GameObject prefab;
 
     void Awake()
     {
@@ -76,14 +76,15 @@ public class beat : MonoBehaviour
         //determine how many beats since the song started
         songPositionInBeats = songPosition / secPerBeat;
 
-        //if (nextIndex < notes.Length && notes[nextIndex] < songPositionInBeats + 3)
-        //{
-        //    Instantiate(prefab, new Vector3(-2, 2, 0), Quaternion.identity);
+        if (nextIndex < notes.Length && notes[nextIndex] < songPositionInBeats + 3)
+        {
+            MusicNote musicNote = ((GameObject) Instantiate(nodePrefab, Vector2.zero, Quaternion.identity)).GetComponent<MusicNote>();
 
-        //    //initialize the fields of the music note
 
-        //    nextIndex++;
-        //}
+            //initialize the fields of the music note
+
+            nextIndex++;
+        }
 
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
     }
