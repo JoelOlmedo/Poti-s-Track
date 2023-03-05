@@ -16,16 +16,16 @@ public class Conductor : MonoBehaviour
 	public float[] track;
 
 	// The start positionX of notes.
-	public float startLineX;
+	public float startLineY;
 
 	// The positionY of music notes.
-	public float posY;
+	public float posX;
 
 	// The finish line (the positionX where players hit) of the notes.
-	public float finishLineX;
+	public float finishLineY;
 
 	// The positionX where the note should be destroyed.
-	public float removeLineX;
+	public float removeLineY;
 
 	// The position offest of toleration. (If the players hit slightly inaccurate for the music note, we tolerate them and count it as a successful hit.)
 	public float tolerationOffset;
@@ -76,7 +76,7 @@ public class Conductor : MonoBehaviour
 			MusicNote frontNote = notesOnScreen.Peek();
 
 			// Distance from the note to the finish line.
-			float offset = Mathf.Abs(frontNote.gameObject.transform.position.x - finishLineX);
+			float offset = Mathf.Abs(frontNote.gameObject.transform.position.y - finishLineY);
 
 			// Music note hit.
 			if (offset <= tolerationOffset)
@@ -133,7 +133,7 @@ public class Conductor : MonoBehaviour
 			// We don't care about the position and rotation because we will set them later in MusicNote.Initialize(...).
 			MusicNote musicNote = ((GameObject)Instantiate(musicNotePrefab, Vector2.zero, Quaternion.identity)).GetComponent<MusicNote>();
 
-			musicNote.Initialize(this, startLineX, finishLineX, removeLineX, posY, track[indexOfNextNote]);
+			musicNote.Initialize(this, startLineY, finishLineY, removeLineY, posX, track[indexOfNextNote]);
 
 			// The note is push into the queue for reference.
 			notesOnScreen.Enqueue(musicNote);
@@ -147,7 +147,7 @@ public class Conductor : MonoBehaviour
 		{
 			MusicNote currNote = notesOnScreen.Peek();
 
-			if (currNote.transform.position.x >= finishLineX + tolerationOffset)
+			if (currNote.transform.position.y <= finishLineY + tolerationOffset)
 			{
 				// Change color to red to indicate a miss.
 				currNote.ChangeColor(false);

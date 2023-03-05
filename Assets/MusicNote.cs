@@ -7,35 +7,35 @@ public class MusicNote : MonoBehaviour
 	public Conductor conductor;
 
 	// We keep the start and end positionX to perform interpolation.
-	public float startX;
-	public float endX;
-	public float removeLineX;
+	public float startY;
+	public float endY;
+	public float removeLineY;
 	public float beat;
 
 	public Color hitColor;
 	public Color missColor;
 	private SpriteRenderer spriteRenderer;
 
-	public void Initialize(Conductor conductor, float startX, float endX, float removeLineX, float posY, float beat)
+	public void Initialize(Conductor conductor, float startY, float endY, float removeLineY, float posX, float beat)
 	{
 		this.conductor = conductor;
-		this.startX = startX;
-		this.endX = endX;
+		this.startY = startY;
+		this.endY = endY;
 		this.beat = beat;
-		this.removeLineX = removeLineX;
+		this.removeLineY = removeLineY;
 
 		// Set to initial position.
-		transform.position = new Vector2(startX, posY);
+		transform.position = new Vector2(startY, posX);
 
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	void Update()
 	{
-		transform.position = new Vector2(startX + (endX - startX) * (1f - (beat - conductor.songposition / conductor.secondsPerBeat) / conductor.BeatsShownOnScreen), transform.position.y);
+		transform.position = new Vector2(transform.position.x, startY + (endY - startY) * (1f - (beat - conductor.songposition / conductor.secondsPerBeat) / conductor.BeatsShownOnScreen));
 
 		// Remove itself when out of the screen (remove line).
-		if (transform.position.x > removeLineX)
+		if (transform.position.y < removeLineY)
 		{
 			Destroy(gameObject);
 		}
